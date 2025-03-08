@@ -15,7 +15,8 @@
         .services { background: #eee; }
         .contact { background: #222; color: white; padding: 50px; text-align: center; }
         .navbar-dark .navbar-nav .nav-link { color: white; font-weight: bold; }
-        .navbar-brand { font-size: 1.5rem; font-weight: bold; }
+        .navbar-brand { font-size: 1.5rem; font-weight: bold; display: flex; align-items: center; }
+        .logo { width: 50px; height: 50px; margin-right: 10px; }
         .service-card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); transition: 0.3s; }
         .service-card:hover { transform: translateY(-5px); box-shadow: 0 6px 12px rgba(0,0,0,0.15); }
         canvas { position: absolute; top: 0; left: 0; z-index: 0; }
@@ -24,7 +25,9 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="#">Brosync Marketing</a>
+            <a class="navbar-brand" href="#">
+                <img src="logo.png" alt="Brosync Logo" class="logo"> Brosync Marketing
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -93,12 +96,16 @@
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(renderer.domElement);
 
-        const geometry = new THREE.TorusKnotGeometry(10, 3, 100, 16);
-        const material = new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true });
+        const geometry = new THREE.TorusKnotGeometry(5, 1.5, 100, 16);
+        const material = new THREE.MeshStandardMaterial({ color: 0xff0000, metalness: 0.5, roughness: 0.5 });
         const torusKnot = new THREE.Mesh(geometry, material);
         scene.add(torusKnot);
 
-        camera.position.z = 50;
+        const light = new THREE.PointLight(0xffffff, 1, 100);
+        light.position.set(10, 10, 10);
+        scene.add(light);
+
+        camera.position.z = 20;
 
         function animate() {
             requestAnimationFrame(animate);
@@ -107,6 +114,13 @@
             renderer.render(scene, camera);
         }
         animate();
+
+        document.addEventListener('mousemove', (event) => {
+            let x = (event.clientX / window.innerWidth) * 2 - 1;
+            let y = -(event.clientY / window.innerHeight) * 2 + 1;
+            torusKnot.rotation.y = x * Math.PI;
+            torusKnot.rotation.x = y * Math.PI;
+        });
     </script>
 </body>
 </html>
