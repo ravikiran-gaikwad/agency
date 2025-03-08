@@ -8,26 +8,27 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
         body { background: #f4f4f4; font-family: 'Poppins', sans-serif; }
-        .hero { position: relative; height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; color: white; background: black; flex-direction: column; }
-        .hero h1 { font-size: 3rem; font-weight: bold; position: relative; z-index: 1; }
-        .hero p { font-size: 1.2rem; position: relative; z-index: 1; margin-top: 10px; }
-        .section { padding: 80px 20px; text-align: center; }
+        .hero { position: relative; height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; color: white; background: black; flex-direction: column; overflow: hidden; }
+        .hero h1 { font-size: 2.5rem; font-weight: bold; position: relative; z-index: 1; }
+        .hero p { font-size: 1.2rem; position: relative; z-index: 1; margin-top: 10px; padding: 0 15px; }
+        .section { padding: 60px 20px; text-align: center; }
         .services { background: #eee; }
         .contact { background: #222; color: white; padding: 50px; text-align: center; }
         .navbar-dark .navbar-nav .nav-link { color: white; font-weight: bold; }
-        .navbar-brand { font-size: 1.5rem; font-weight: bold; display: flex; align-items: center; }
-        .logo { width: 50px; height: 50px; margin-right: 10px; }
+        .navbar-brand { font-size: 1.5rem; font-weight: bold; }
         .service-card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); transition: 0.3s; }
         .service-card:hover { transform: translateY(-5px); box-shadow: 0 6px 12px rgba(0,0,0,0.15); }
-        canvas { position: absolute; top: 0; left: 0; z-index: 0; }
+        canvas { position: absolute; top: 0; left: 0; z-index: 0; width: 100% !important; height: 100% !important; }
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+            .hero p { font-size: 1rem; }
+        }
     </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="#">
-                <img src="logo.png" alt="Brosync Logo" class="logo"> Brosync Marketing
-            </a>
+            <a class="navbar-brand" href="#">Brosync Marketing</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -85,7 +86,7 @@
     <section id="contact" class="contact">
         <div class="container">
             <h2>Contact Us</h2>
-            <p>Email: contact@brosyncmarketing.agency | Phone: +919822778001</p>
+            <p>Email: contact@brosyncmarketing.com | Phone: +91 9876543210</p>
         </div>
     </section>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -94,18 +95,14 @@
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('threeCanvas'), alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
-        document.body.appendChild(renderer.domElement);
+        document.querySelector(".hero").appendChild(renderer.domElement);
 
-        const geometry = new THREE.TorusKnotGeometry(5, 1.5, 100, 16);
-        const material = new THREE.MeshStandardMaterial({ color: 0xff0000, metalness: 0.5, roughness: 0.5 });
+        const geometry = new THREE.TorusKnotGeometry(8, 2.5, 100, 16);
+        const material = new THREE.MeshBasicMaterial({ color: 0xff0000, wireframe: true });
         const torusKnot = new THREE.Mesh(geometry, material);
         scene.add(torusKnot);
 
-        const light = new THREE.PointLight(0xffffff, 1, 100);
-        light.position.set(10, 10, 10);
-        scene.add(light);
-
-        camera.position.z = 20;
+        camera.position.z = 35;
 
         function animate() {
             requestAnimationFrame(animate);
@@ -115,11 +112,10 @@
         }
         animate();
 
-        document.addEventListener('mousemove', (event) => {
-            let x = (event.clientX / window.innerWidth) * 2 - 1;
-            let y = -(event.clientY / window.innerHeight) * 2 + 1;
-            torusKnot.rotation.y = x * Math.PI;
-            torusKnot.rotation.x = y * Math.PI;
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
         });
     </script>
 </body>
