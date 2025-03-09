@@ -23,6 +23,11 @@
             .hero h1 { font-size: 2rem; }
             .hero p { font-size: 1rem; }
         }
+        html, body {
+    overflow: hidden;
+    height: 100%;
+}
+
     </style>
 </head>
 <body>
@@ -79,14 +84,18 @@
     </section>
     <section id="contact" class="contact">
         <h2>Contact Us</h2>
-        <p>Email: contact@brosyncmarketing.agency | Phone: +919822778001</p>
+        <p>Email: contact@brosyncmarketing.agency | Phone: +918237431432/+919699897695</p>
     </section>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('threeCanvas'), alpha: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
+       renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.domElement.style.position = "absolute";
+renderer.domElement.style.top = "0";
+renderer.domElement.style.left = "0";
+renderer.domElement.style.height = "100vh";
         document.body.appendChild(renderer.domElement);
 
         const geometry = new THREE.TorusKnotGeometry(8, 2.5, 100, 16);
